@@ -1,15 +1,19 @@
 import Navbar from "../components/layout/Navbar";
+import Hero from "../components/home/Hero";
+import LiveRaceCard from "../components/home/LiveRaceCard";
+import Features from "../components/home/Features";
+import RaceEngineer from "../components/home/RaceEngineer";
+import RadioCheck from "../components/home/RadioCheck";
 
 function Home() {
   return (
     <>
       <Navbar />
-
-      <main className="flex min-h-screen items-center justify-center">
-        <h1 className="text-6xl font-bold text-white">
-          Welcome to PitWall 🏎️
-        </h1>
-      </main>
+      <Hero />
+      <LiveRaceCard />
+      <Features />
+      <RaceEngineer />
+      <RadioCheck />
     </>
   );
 }

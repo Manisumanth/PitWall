@@ -1,29 +1,71 @@
+import { Flag, Radio, Bot } from "lucide-react";
+
 function Navbar() {
   return (
-    <nav className="w-full border-b border-gray-800 bg-[#0B0B0D]">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+    <nav className="fixed top-0 left-0 z-50 w-full border-b border-white/5 bg-black/40 backdrop-blur-2xl">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-8">
 
         {/* Logo */}
-        <div className="flex items-center gap-2">
-          <span className="text-2xl">🏁</span>
-          <h1 className="text-2xl font-bold text-red-600">
-            PitWall
+        <div className="flex items-center gap-3">
+
+          <img
+            src="/logo.png"
+            alt="PitWall"
+            className="h-8"
+          />
+
+          <h1 className="text-2xl font-bold tracking-wide text-white">
+            Pit<span className="text-red-600">Wall</span>
           </h1>
+
         </div>
 
-        {/* Navigation Links */}
-        <ul className="hidden gap-8 text-gray-300 md:flex">
-          <li className="cursor-pointer hover:text-red-600">Home</li>
-          <li className="cursor-pointer hover:text-red-600">Live</li>
-          <li className="cursor-pointer hover:text-red-600">Calendar</li>
-          <li className="cursor-pointer hover:text-red-600">Standings</li>
-          <li className="cursor-pointer hover:text-red-600">News</li>
+        {/* Navigation */}
+
+        <ul className="flex items-center gap-10">
+
+          {["Home", "Live", "Calendar", "Standings"].map((item) => (
+            <li
+              key={item}
+              className="group relative cursor-pointer text-lg text-gray-300 transition hover:text-white"
+            >
+              {item}
+
+              <span className="absolute -bottom-2 left-0 h-[2px] w-0 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
+
+            </li>
+          ))}
+
         </ul>
 
-        {/* Live Indicator */}
-        <div className="flex items-center gap-2 rounded-full bg-red-600 px-3 py-1 text-sm font-semibold">
-          <span className="h-2 w-2 rounded-full bg-white"></span>
-          LIVE
+        {/* Right */}
+
+        <div className="flex items-center gap-4">
+
+          <button className="flex items-center gap-2 rounded-full border border-red-600/50 bg-red-600/5 px-5 py-2 text-white transition hover:bg-red-600/20">
+
+            <Radio size={16} />
+
+            Radio Check
+
+          </button>
+
+          <button className="flex items-center gap-2 rounded-full bg-gradient-to-r from-red-600 to-red-500 px-6 py-2 font-semibold text-white shadow-lg shadow-red-600/30 transition hover:scale-105">
+
+            <Bot size={16} />
+
+            Race Engineer
+
+          </button>
+
+          <div className="flex items-center gap-2 rounded-full border border-green-500/50 bg-green-500/5 px-4 py-2 text-green-400">
+
+            <Flag size={15} />
+
+            LIVE
+
+          </div>
+
         </div>
 
       </div>
