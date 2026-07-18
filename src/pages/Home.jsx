@@ -1,19 +1,17 @@
-import Navbar from "../components/layout/Navbar";
 import Hero from "../components/home/Hero";
-import LiveRaceCard from "../components/home/LiveRaceCard";
 import Features from "../components/home/Features";
-import RaceEngineer from "../components/home/RaceEngineer";
-import RadioCheck from "../components/home/RadioCheck";
+import DashboardPreview from "../components/home/DashboardPreview";
+import RaceEngineerPreview from "../components/home/RaceEngineerPreview";
+import RadioPreview from "../components/home/RadioPreview";
 
 function Home() {
   return (
     <>
-      <Navbar />
       <Hero />
-      <LiveRaceCard />
       <Features />
-      <RaceEngineer />
-      <RadioCheck />
+      <DashboardPreview />
+      <RaceEngineerPreview />
+      <RadioPreview />
     </>
   );
 }
