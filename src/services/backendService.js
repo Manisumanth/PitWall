@@ -1,0 +1,33 @@
+const API = "http://127.0.0.1:8000/api";
+
+export async function getCalendar() {
+  const response = await fetch(`${API}/calendar`);
+  return await response.json();
+}
+
+export async function getDrivers() {
+  const response = await fetch(`${API}/drivers`);
+  return await response.json();
+}
+
+export async function getDriver(driverCode) {
+  const response = await fetch(`${API}/drivers/${driverCode}`);
+  return await response.json();
+}
+
+export async function getTeams() {
+  const response = await fetch(`${API}/teams`);
+  return await response.json();
+}
+
+export async function getTeam(teamName) {
+  const response = await fetch(
+    `${API}/teams/${encodeURIComponent(teamName)}`
+  );
+  return await response.json();
+}
+
+export async function getDriverStandings() {
+  const response = await fetch(`${API}/standings/drivers`);
+  return await response.json();
+}

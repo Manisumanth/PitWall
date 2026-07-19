@@ -1,65 +1,83 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { getTeams } from "../services/backendService";
 import GlassCard from "../components/ui/GlassCard";
 
-const teams = [
-  ["McLaren", "Mercedes", 468],
-  ["Red Bull Racing", "Honda RBPT", 441],
-  ["Ferrari", "Ferrari", 394],
-  ["Mercedes", "Mercedes", 332],
-  ["Aston Martin", "Mercedes", 142],
-];
-
 function Teams() {
+  const [teams, setTeams] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadTeams() {
+      try {
+        const data = await getTeams();
+        setTeams(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadTeams();
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#080808] text-white">
-
       <div className="mx-auto max-w-7xl px-8 py-12">
 
         <h1 className="mb-2 text-5xl font-black">
-          Constructors
+          Formula 1 Teams
         </h1>
 
         <p className="mb-10 text-gray-400">
-          Team championship standings.
+          Current Constructor Line-up
         </p>
 
-        <div className="space-y-5">
+        {loading ? (
+          <h2 className="text-xl">Loading...</h2>
+        ) : (
+          <div className="grid gap-6 md:grid-cols-2">
 
-          {teams.map((team, index) => (
+            {teams.map((team) => (
 
-            <GlassCard key={team[0]}>
+              <Link
+                key={team.team}
+                to={`/teams/${encodeURIComponent(team.team)}`}
+                className="block"
+              >
 
-              <div className="flex items-center justify-between">
+                <GlassCard>
 
-                <div>
-
-                  <p className="text-red-500">
-                    P{index + 1}
-                  </p>
-
-                  <h2 className="mt-2 text-2xl font-bold">
-                    {team[0]}
+                  <h2 className="text-3xl font-bold">
+                    {team.team}
                   </h2>
 
-                  <p className="text-gray-400">
-                    {team[1]}
-                  </p>
+                  <div className="mt-6 space-y-3">
 
-                </div>
+                    {team.drivers.map((driver) => (
 
-                <div className="text-4xl font-black">
-                  {team[2]}
-                </div>
+                      <div
+                        key={driver}
+                        className="rounded-xl bg-white/5 p-4"
+                      >
+                        {driver}
+                      </div>
 
-              </div>
+                    ))}
 
-            </GlassCard>
+                  </div>
 
-          ))}
+                </GlassCard>
 
-        </div>
+              </Link>
+
+            ))}
+
+          </div>
+        )}
 
       </div>
-
     </div>
   );
 }

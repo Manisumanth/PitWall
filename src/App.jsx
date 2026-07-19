@@ -7,7 +7,9 @@ import Live from "./pages/Live";
 import Calendar from "./pages/Calendar";
 import Standings from "./pages/Standings";
 import Drivers from "./pages/Drivers";
+import DriverDetails from "./pages/DriverDetails";
 import Teams from "./pages/Teams";
+import TeamDetails from "./pages/TeamDetails";
 import NotFound from "./pages/NotFound";
 
 function App() {
@@ -16,12 +18,29 @@ function App() {
       <Routes>
 
         <Route element={<MainLayout />}>
+
           <Route path="/" element={<Home />} />
+
           <Route path="/live" element={<Live />} />
+
           <Route path="/calendar" element={<Calendar />} />
+
           <Route path="/standings" element={<Standings />} />
+
           <Route path="/drivers" element={<Drivers />} />
+
+          <Route
+            path="/drivers/:driverCode"
+            element={<DriverDetails />}
+          />
+
           <Route path="/teams" element={<Teams />} />
+
+          <Route
+            path="/teams/:teamName"
+            element={<TeamDetails />}
+          />
+
         </Route>
 
         <Route path="*" element={<NotFound />} />

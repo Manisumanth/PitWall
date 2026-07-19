@@ -1,96 +1,87 @@
+import { useEffect, useState } from "react";
+import { getCalendar } from "../services/backendService";
 import GlassCard from "../components/ui/GlassCard";
 
-const races = [
-  {
-    round: 14,
-    name: "Belgian Grand Prix",
-    circuit: "Spa-Francorchamps",
-    date: "27 Jul 2026",
-    status: "NEXT",
-  },
-  {
-    round: 15,
-    name: "Hungarian Grand Prix",
-    circuit: "Hungaroring",
-    date: "03 Aug 2026",
-    status: "UPCOMING",
-  },
-  {
-    round: 16,
-    name: "Dutch Grand Prix",
-    circuit: "Zandvoort",
-    date: "31 Aug 2026",
-    status: "UPCOMING",
-  },
-  {
-    round: 17,
-    name: "Italian Grand Prix",
-    circuit: "Monza",
-    date: "07 Sep 2026",
-    status: "UPCOMING",
-  },
-];
-
 function Calendar() {
+  const [races, setRaces] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadCalendar() {
+      try {
+        const data = await getCalendar();
+        setRaces(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadCalendar();
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#080808] text-white">
-
       <div className="mx-auto max-w-7xl px-8 py-12">
 
         <h1 className="mb-2 text-5xl font-black">
-          Race Calendar
+          Formula 1 Calendar
         </h1>
 
         <p className="mb-10 text-gray-400">
-          Complete Formula 1 season schedule.
+          Official Formula 1 Schedule ({new Date().getFullYear()})
         </p>
 
-        <div className="space-y-6">
+        {loading ? (
+          <h2 className="text-xl">Loading...</h2>
+        ) : (
+          <div className="space-y-5">
 
-          {races.map((race) => (
+            {races.map((race) => (
 
-            <GlassCard key={race.round}>
+              <GlassCard key={race.round}>
 
-              <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between">
 
-                <div>
+                  <div>
 
-                  <p className="text-red-500">
-                    ROUND {race.round}
-                  </p>
+                    <p className="mb-2 text-red-500 font-bold">
+                      ROUND {race.round}
+                    </p>
 
-                  <h2 className="mt-2 text-2xl font-bold">
-                    {race.name}
-                  </h2>
+                    <h2 className="text-2xl font-bold">
+                      {race.name}
+                    </h2>
 
-                  <p className="mt-1 text-gray-400">
-                    {race.circuit}
-                  </p>
+                    <p className="mt-2 text-gray-400">
+                      {race.location}, {race.country}
+                    </p>
+
+                  </div>
+
+                  <div className="text-right">
+
+                    <p className="font-semibold">
+                      {race.race.split(" ")[0]}
+                    </p>
+
+                    <p className="text-red-500">
+                      Race Day
+                    </p>
+
+                  </div>
 
                 </div>
 
-                <div className="text-right">
+              </GlassCard>
 
-                  <p className="text-xl font-semibold">
-                    {race.date}
-                  </p>
+            ))}
 
-                  <span className="mt-3 inline-block rounded-full bg-red-600/20 px-4 py-2 text-red-400">
-                    {race.status}
-                  </span>
-
-                </div>
-
-              </div>
-
-            </GlassCard>
-
-          ))}
-
-        </div>
+          </div>
+        )}
 
       </div>
-
     </div>
   );
 }

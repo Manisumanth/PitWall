@@ -1,65 +1,100 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { getDriverStandings } from "../services/backendService";
 import GlassCard from "../components/ui/GlassCard";
 
-const standings = [
-  ["Lando Norris", "McLaren", 264],
-  ["Max Verstappen", "Red Bull", 251],
-  ["Charles Leclerc", "Ferrari", 217],
-  ["Oscar Piastri", "McLaren", 204],
-  ["George Russell", "Mercedes", 180],
-];
-
 function Standings() {
+  const [standings, setStandings] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadStandings() {
+      try {
+        const data = await getDriverStandings();
+        setStandings(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadStandings();
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#080808] text-white">
+      <div className="mx-auto max-w-7xl px-8 py-12">
 
-      <div className="mx-auto max-w-6xl px-8 py-12">
-
-        <h1 className="mb-10 text-5xl font-black">
-          Driver Standings
+        <h1 className="mb-2 text-5xl font-black">
+          Driver Championship
         </h1>
 
-        <div className="space-y-5">
+        <p className="mb-10 text-gray-400">
+          Current Formula 1 World Championship Standings
+        </p>
 
-          {standings.map((driver, index) => (
+        {loading ? (
+          <h2 className="text-xl">Loading...</h2>
+        ) : (
+          <div className="space-y-5">
 
-            <GlassCard key={driver[0]}>
+            {standings.map((driver) => (
 
-              <div className="flex items-center justify-between">
+              <Link
+                key={driver.code}
+                to={`/drivers/${driver.code}`}
+                className="block"
+              >
 
-                <div className="flex items-center gap-6">
+                <GlassCard>
 
-                  <span className="text-3xl font-black text-red-500">
-                    P{index + 1}
-                  </span>
+                  <div className="flex items-center justify-between">
 
-                  <div>
+                    <div className="flex items-center gap-6">
 
-                    <h2 className="text-xl font-bold">
-                      {driver[0]}
-                    </h2>
+                      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-red-600 text-2xl font-bold">
+                        {driver.position}
+                      </div>
 
-                    <p className="text-gray-400">
-                      {driver[1]}
-                    </p>
+                      <div>
+
+                        <h2 className="text-2xl font-bold">
+                          {driver.driver}
+                        </h2>
+
+                        <p className="text-gray-400">
+                          {driver.team}
+                        </p>
+
+                      </div>
+
+                    </div>
+
+                    <div className="text-right">
+
+                      <h2 className="text-3xl font-black">
+                        {driver.points}
+                      </h2>
+
+                      <p className="text-gray-400">
+                        {driver.wins} Wins
+                      </p>
+
+                    </div>
 
                   </div>
 
-                </div>
+                </GlassCard>
 
-                <span className="text-3xl font-bold">
-                  {driver[2]}
-                </span>
+              </Link>
 
-              </div>
+            ))}
 
-            </GlassCard>
-
-          ))}
-
-        </div>
+          </div>
+        )}
 
       </div>
-
     </div>
   );
 }

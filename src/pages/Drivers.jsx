@@ -1,78 +1,86 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { getDrivers } from "../services/backendService";
 import GlassCard from "../components/ui/GlassCard";
 
-const drivers = [
-  {
-    number: 4,
-    name: "Lando Norris",
-    team: "McLaren",
-    country: "🇬🇧 United Kingdom",
-  },
-  {
-    number: 1,
-    name: "Max Verstappen",
-    team: "Red Bull Racing",
-    country: "🇳🇱 Netherlands",
-  },
-  {
-    number: 16,
-    name: "Charles Leclerc",
-    team: "Ferrari",
-    country: "🇲🇨 Monaco",
-  },
-  {
-    number: 81,
-    name: "Oscar Piastri",
-    team: "McLaren",
-    country: "🇦🇺 Australia",
-  },
-  {
-    number: 63,
-    name: "George Russell",
-    team: "Mercedes",
-    country: "🇬🇧 United Kingdom",
-  },
-];
-
 function Drivers() {
+  const [drivers, setDrivers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadDrivers() {
+      try {
+        const data = await getDrivers();
+        setDrivers(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadDrivers();
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#080808] text-white">
       <div className="mx-auto max-w-7xl px-8 py-12">
 
         <h1 className="mb-2 text-5xl font-black">
-          Drivers
+          Formula 1 Drivers
         </h1>
 
         <p className="mb-10 text-gray-400">
-          Formula 1 driver lineup.
+          Official Driver List
         </p>
 
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {loading ? (
+          <h2 className="text-xl">Loading...</h2>
+        ) : (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
 
-          {drivers.map((driver) => (
+            {drivers.map((driver) => (
+              <Link
+                key={driver.number}
+                to={`/drivers/${driver.code}`}
+                className="block"
+              >
+                <GlassCard>
 
-            <GlassCard key={driver.number}>
+                  <div className="space-y-3">
 
-              <div className="mb-6 text-5xl font-black text-red-500">
-                #{driver.number}
-              </div>
+                    <div className="flex items-center justify-between">
 
-              <h2 className="text-2xl font-bold">
-                {driver.name}
-              </h2>
+                      <h2 className="text-2xl font-bold">
+                        {driver.code}
+                      </h2>
 
-              <p className="mt-2 text-gray-400">
-                {driver.team}
-              </p>
+                      <span className="rounded-full bg-red-600 px-3 py-1 text-sm font-bold">
+                        #{driver.number}
+                      </span>
 
-              <p className="mt-5">
-                {driver.country}
-              </p>
+                    </div>
 
-            </GlassCard>
+                    <h3 className="text-xl">
+                      {driver.first_name} {driver.last_name}
+                    </h3>
 
-          ))}
+                    <p className="text-gray-400">
+                      {driver.team}
+                    </p>
 
-        </div>
+                    <p className="text-red-500">
+                      {driver.country}
+                    </p>
+
+                  </div>
+
+                </GlassCard>
+              </Link>
+            ))}
+
+          </div>
+        )}
 
       </div>
     </div>
