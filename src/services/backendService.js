@@ -46,3 +46,13 @@ export async function getConstructorStandings() {
   const response = await fetch(`${API}/constructors`);
   return await response.json();
 }
+
+export async function getWeather() {
+  const response = await fetch(`${API}/weather`);
+  return await response.json();
+}
+
+export async function getRaceControl() {
+  const response = await fetch(`${API}/race-control`);
+  return await response.json();
+}
