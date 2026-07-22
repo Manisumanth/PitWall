@@ -1,27 +1,84 @@
 import { useEffect, useState } from "react";
-import { getCurrentSession } from "../services/raceService";
-import GlassCard from "../components/ui/GlassCard";
+
+import {
+  getLiveSession,
+  getCalendar,
+  getTiming,
+} from "../services/backendService";
+
+import LiveHeader from "../components/live/LiveHeader";
+import SessionCard from "../components/live/SessionCard";
+import CountdownCard from "../components/live/CountdownCard";
+import WeekendSchedule from "../components/live/WeekendSchedule";
+import TimingTable from "../components/live/TimingTable";
 
 function Live() {
   const [session, setSession] = useState(null);
+  const [weekend, setWeekend] = useState(null);
+  const [timing, setTiming] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [countdown, setCountdown] = useState("");
 
   useEffect(() => {
-    async function loadSession() {
+    async function loadData() {
       try {
-        const data = await getCurrentSession();
-        setSession(data);
+        const live = await getLiveSession();
+        const calendar = await getCalendar();
+        const timingData = await getTiming();
+
+        setSession(live);
+        setTiming(timingData);
+
+        const raceWeekend = calendar.find(
+          (race) => race.round === live.round
+        );
+
+        setWeekend(raceWeekend);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     }
 
-    loadSession();
+    loadData();
+
+    const interval = setInterval(loadData, 30000);
+
+    return () => clearInterval(interval);
   }, []);
 
-  if (!session) {
+  useEffect(() => {
+    if (!session || session.live) return;
+
+    const timer = setInterval(() => {
+      const start = new Date(session.start_time);
+      const now = new Date();
+
+      const diff = start - now;
+
+      if (diff <= 0) {
+        setCountdown("Starting...");
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      setCountdown(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [session]);
+
+  if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#080808] text-white">
-        Loading Live Session...
+      <div className="min-h-screen flex items-center justify-center bg-[#080808] text-white">
+        <h1 className="text-3xl font-bold">
+          Loading Live Dashboard...
+        </h1>
       </div>
     );
   }
@@ -31,81 +88,26 @@ function Live() {
 
       <div className="mx-auto max-w-7xl px-8 py-12">
 
-        <div className="mb-10 flex items-center justify-between">
+        <LiveHeader />
 
-          <div>
+        <SessionCard
+          session={session}
+          weekend={weekend}
+        />
 
-            <h1 className="text-5xl font-black">
-              Live Race Center
-            </h1>
-
-            <p className="mt-2 text-gray-400">
-              Powered by OpenF1
-            </p>
-
+        {!session.live && (
+          <div className="mt-8">
+            <CountdownCard countdown={countdown} />
           </div>
+        )}
 
-          <div className="rounded-full bg-red-600 px-5 py-2 font-bold">
-            ● LIVE
-          </div>
-
+        <div className="mt-8">
+          <WeekendSchedule weekend={weekend} />
         </div>
 
-        <GlassCard>
-
-          <div className="grid gap-8 md:grid-cols-2">
-
-            <div>
-
-              <p className="text-gray-400">
-                Current Session
-              </p>
-
-              <h2 className="mt-2 text-3xl font-bold">
-                {session.session_name}
-              </h2>
-
-            </div>
-
-            <div>
-
-              <p className="text-gray-400">
-                Circuit
-              </p>
-
-              <h2 className="mt-2 text-3xl font-bold">
-                {session.circuit_short_name}
-              </h2>
-
-            </div>
-
-            <div>
-
-              <p className="text-gray-400">
-                Country
-              </p>
-
-              <h2 className="mt-2 text-2xl">
-                {session.country_name}
-              </h2>
-
-            </div>
-
-            <div>
-
-              <p className="text-gray-400">
-                Session Start
-              </p>
-
-              <h2 className="mt-2 text-2xl">
-                {new Date(session.date_start).toLocaleString()}
-              </h2>
-
-            </div>
-
-          </div>
-
-        </GlassCard>
+        <div className="mt-8">
+          <TimingTable timing={timing} />
+        </div>
 
       </div>
 
