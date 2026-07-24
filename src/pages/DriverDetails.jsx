@@ -10,7 +10,7 @@ function DriverDetails() {
     async function loadDriver() {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/api/drivers/${driverCode}`
+          `https://pitwall-backend-c6yr.onrender.com/api/drivers/${driverCode}`
         );
 
         const data = await response.json();

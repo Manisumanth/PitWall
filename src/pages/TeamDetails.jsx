@@ -10,7 +10,7 @@ function TeamDetails() {
     async function loadTeam() {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/api/teams/${encodeURIComponent(teamName)}`
+          `https://pitwall-backend-c6yr.onrender.com/api/teams/${encodeURIComponent(teamName)}`
         );
 
         const data = await response.json();

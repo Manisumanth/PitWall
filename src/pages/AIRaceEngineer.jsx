@@ -33,7 +33,7 @@ function AIRaceEngineer() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/ai", {
+      const response = await fetch("https://pitwall-backend-c6yr.onrender.com/api/ai", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

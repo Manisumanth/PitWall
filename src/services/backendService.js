@@ -1,4 +1,4 @@
-const API = "http://127.0.0.1:8000/api";
+const API = "https://pitwall-backend-c6yr.onrender.com/api";
 
 export async function getCalendar() {
   const response = await fetch(`${API}/calendar`);
