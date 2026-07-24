@@ -8,13 +8,16 @@ function TeamDetails() {
 
   useEffect(() => {
     async function loadTeam() {
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/teams/${encodeURIComponent(teamName)}`
-      );
+      try {
+        const response = await fetch(
+          `http://127.0.0.1:8000/api/teams/${encodeURIComponent(teamName)}`
+        );
 
-      const data = await response.json();
-
-      setTeam(data);
+        const data = await response.json();
+        setTeam(data);
+      } catch (err) {
+        console.error(err);
+      }
     }
 
     loadTeam();
@@ -22,8 +25,10 @@ function TeamDetails() {
 
   if (!team) {
     return (
-      <div className="min-h-screen bg-[#080808] text-white flex items-center justify-center">
-        Loading...
+      <div className="flex min-h-screen items-center justify-center bg-[#080808] text-white">
+        <h2 className="animate-pulse text-lg sm:text-xl">
+          Loading Team...
+        </h2>
       </div>
     );
   }
@@ -31,19 +36,23 @@ function TeamDetails() {
   return (
     <div className="min-h-screen bg-[#080808] text-white">
 
-      <div className="mx-auto max-w-6xl px-8 py-12">
+      <div className="mx-auto max-w-6xl px-5 py-10 sm:px-8 lg:py-12">
 
-        <p className="text-red-500 font-bold">
+        {/* Header */}
+
+        <p className="text-sm font-bold tracking-[0.25em] text-red-500">
           CONSTRUCTOR PROFILE
         </p>
 
-        <h1 className="mt-2 text-6xl font-black">
+        <h1 className="mt-3 break-words text-3xl font-black sm:text-4xl lg:text-6xl">
           {team.team}
         </h1>
 
-        <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-8">
+        {/* Card */}
 
-          <h2 className="mb-6 text-2xl font-bold">
+        <div className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-5 sm:mt-10 sm:p-8">
+
+          <h2 className="mb-6 text-xl font-bold sm:text-2xl">
             Drivers
           </h2>
 
@@ -52,7 +61,7 @@ function TeamDetails() {
             {team.drivers.map((driver) => (
               <div
                 key={driver}
-                className="rounded-xl bg-white/5 p-4"
+                className="rounded-xl bg-white/5 p-3 text-sm transition-colors duration-300 hover:bg-white/10 sm:p-4 sm:text-base"
               >
                 {driver}
               </div>

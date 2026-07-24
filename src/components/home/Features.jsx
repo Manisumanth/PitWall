@@ -31,19 +31,19 @@ const features = [
 
 function Features() {
   return (
-    <section className="bg-[#080808] px-8 py-28 text-white">
+    <section className="bg-[#080808] px-5 py-20 text-white sm:px-8 lg:py-28">
 
       <div className="mx-auto max-w-7xl">
 
-        <h2 className="text-center text-5xl font-bold">
+        <h2 className="text-center text-3xl font-bold sm:text-4xl lg:text-5xl">
           Why <span className="text-red-600">PitWall</span>?
         </h2>
 
-        <p className="mx-auto mt-5 max-w-2xl text-center text-lg text-gray-400">
+        <p className="mx-auto mt-4 max-w-2xl px-2 text-center text-base leading-7 text-gray-400 sm:mt-5 sm:text-lg">
           Everything a Formula 1 fan needs in one premium dashboard.
         </p>
 
-        <div className="mt-20 grid gap-8 md:grid-cols-2">
+        <div className="mt-12 grid grid-cols-1 gap-6 sm:mt-16 md:grid-cols-2 lg:mt-20 lg:gap-8">
 
           {features.map((feature, index) => (
 
@@ -57,18 +57,18 @@ function Features() {
                 type: "spring",
                 stiffness: 260,
               }}
-              className="rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-md"
+              className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-md transition-all duration-300 hover:border-red-500/30 hover:shadow-xl hover:shadow-red-600/10 sm:p-8"
             >
 
-              <div className="mb-6 text-red-500">
+              <div className="mb-5 text-red-500">
                 {feature.icon}
               </div>
 
-              <h3 className="text-2xl font-bold">
+              <h3 className="text-xl font-bold sm:text-2xl">
                 {feature.title}
               </h3>
 
-              <p className="mt-4 leading-8 text-gray-400">
+              <p className="mt-3 text-sm leading-7 text-gray-400 sm:mt-4 sm:text-base sm:leading-8">
                 {feature.desc}
               </p>
 

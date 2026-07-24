@@ -9,7 +9,6 @@ import GlassCard from "../components/ui/GlassCard";
 function Standings() {
   const [driverStandings, setDriverStandings] = useState([]);
   const [constructorStandings, setConstructorStandings] = useState([]);
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -34,8 +33,10 @@ function Standings() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#080808] text-white flex items-center justify-center">
-        <h2 className="text-2xl font-bold">Loading Standings...</h2>
+      <div className="flex min-h-screen items-center justify-center bg-[#080808] text-white">
+        <h2 className="animate-pulse text-xl font-bold sm:text-2xl">
+          Loading Standings...
+        </h2>
       </div>
     );
   }
@@ -43,19 +44,21 @@ function Standings() {
   return (
     <div className="min-h-screen bg-[#080808] text-white">
 
-      <div className="mx-auto max-w-7xl px-8 py-12">
+      <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 lg:py-12">
 
-        <h1 className="text-5xl font-black">
+        {/* Header */}
+
+        <h1 className="text-3xl font-black sm:text-4xl lg:text-5xl">
           Championship Standings
         </h1>
 
-        <p className="mt-3 mb-12 text-gray-400">
+        <p className="mt-3 mb-10 text-sm text-gray-400 sm:mb-12 sm:text-base">
           Current Formula 1 World Championship
         </p>
 
         {/* DRIVER STANDINGS */}
 
-        <h2 className="mb-6 text-3xl font-bold text-red-500">
+        <h2 className="mb-6 text-2xl font-bold text-red-500 sm:text-3xl">
           Driver Championship
         </h2>
 
@@ -71,21 +74,21 @@ function Standings() {
 
               <GlassCard>
 
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
 
-                  <div className="flex items-center gap-6">
+                  <div className="flex items-center gap-4 sm:gap-6">
 
-                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-red-600 text-xl font-bold">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-600 text-lg font-bold sm:h-14 sm:w-14 sm:text-xl">
                       {driver.position}
                     </div>
 
                     <div>
 
-                      <h3 className="text-2xl font-bold">
+                      <h3 className="text-lg font-bold sm:text-2xl">
                         {driver.driver}
                       </h3>
 
-                      <p className="text-gray-400">
+                      <p className="text-sm text-gray-400 sm:text-base">
                         {driver.team}
                       </p>
 
@@ -93,13 +96,13 @@ function Standings() {
 
                   </div>
 
-                  <div className="text-right">
+                  <div className="text-left sm:text-right">
 
-                    <h2 className="text-3xl font-black">
+                    <h2 className="text-2xl font-black sm:text-3xl">
                       {driver.points}
                     </h2>
 
-                    <p className="text-gray-400">
+                    <p className="text-sm text-gray-400">
                       {driver.wins} Wins
                     </p>
 
@@ -117,7 +120,7 @@ function Standings() {
 
         {/* CONSTRUCTOR STANDINGS */}
 
-        <h2 className="mt-20 mb-6 text-3xl font-bold text-red-500">
+        <h2 className="mt-16 mb-6 text-2xl font-bold text-red-500 sm:mt-20 sm:text-3xl">
           Constructor Championship
         </h2>
 
@@ -127,21 +130,21 @@ function Standings() {
 
             <GlassCard key={team.team}>
 
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
 
-                <div className="flex items-center gap-6">
+                <div className="flex items-center gap-4 sm:gap-6">
 
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-black text-xl font-bold">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-lg font-bold text-black sm:h-14 sm:w-14 sm:text-xl">
                     {team.position}
                   </div>
 
                   <div>
 
-                    <h3 className="text-2xl font-bold">
+                    <h3 className="text-lg font-bold break-words sm:text-2xl">
                       {team.team}
                     </h3>
 
-                    <p className="text-gray-400">
+                    <p className="text-sm text-gray-400">
                       Constructor
                     </p>
 
@@ -149,13 +152,13 @@ function Standings() {
 
                 </div>
 
-                <div className="text-right">
+                <div className="text-left sm:text-right">
 
-                  <h2 className="text-3xl font-black">
+                  <h2 className="text-2xl font-black sm:text-3xl">
                     {team.points}
                   </h2>
 
-                  <p className="text-gray-400">
+                  <p className="text-sm text-gray-400">
                     {team.wins} Wins
                   </p>
 

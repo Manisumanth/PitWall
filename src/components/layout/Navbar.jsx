@@ -1,33 +1,38 @@
-import { Flag, Radio, Bot } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import { Menu, X, Bot } from "lucide-react";
+import { NavLink, Link } from "react-router-dom";
 
 function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const navLinkClass = ({ isActive }) =>
-    `group relative text-lg transition ${
+    `transition ${
       isActive
         ? "text-red-500 font-semibold"
         : "text-gray-300 hover:text-white"
     }`;
 
   return (
-    <nav className="fixed top-0 left-0 z-50 w-full border-b border-white/5 bg-black/40 backdrop-blur-2xl">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-8">
+    <nav className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-black/40 backdrop-blur-2xl">
+      <div className="mx-auto flex h-16 sm:h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
 
         {/* Logo */}
-        <div className="flex items-center gap-3">
+        <Link to="/" className="flex items-center gap-2 sm:gap-3">
+
           <img
             src="/logo.png"
             alt="PitWall"
-            className="h-8"
+            className="h-7 sm:h-9"
           />
 
-          <h1 className="text-2xl font-bold tracking-wide text-white">
+          <h1 className="text-xl sm:text-2xl font-bold text-white">
             Pit<span className="text-red-600">Wall</span>
           </h1>
-        </div>
 
-        {/* Navigation */}
-        <ul className="flex items-center gap-10">
+        </Link>
+
+        {/* Desktop Navigation */}
+        <ul className="hidden items-center gap-10 lg:flex">
 
           <li>
             <NavLink to="/" className={navLinkClass}>
@@ -67,27 +72,99 @@ function Navbar() {
 
         </ul>
 
-        {/* Right */}
-        <div className="flex items-center gap-4">
+        {/* Desktop AI Button */}
+        <div className="hidden lg:flex">
 
-          <button className="flex items-center gap-2 rounded-full border border-red-600/50 bg-red-600/5 px-5 py-2 text-white transition hover:bg-red-600/20">
-            <Radio size={16} />
-            Radio Check
-          </button>
-
-          <button className="flex items-center gap-2 rounded-full bg-gradient-to-r from-red-600 to-red-500 px-6 py-2 font-semibold text-white shadow-lg shadow-red-600/30 transition hover:scale-105">
-            <Bot size={16} />
+          <Link
+            to="/ai"
+            className="flex items-center gap-2 rounded-full bg-gradient-to-r from-red-600 to-red-500 px-6 py-3 font-semibold text-white transition duration-300 hover:scale-105 hover:shadow-lg hover:shadow-red-500/30"
+          >
+            <Bot size={18} />
             Race Engineer
-          </button>
+          </Link>
 
-          <div className="flex items-center gap-2 rounded-full border border-green-500/50 bg-green-500/5 px-4 py-2 text-green-400">
-            <Flag size={15} />
-            LIVE
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="rounded-lg p-2 text-white transition hover:bg-white/10 lg:hidden"
+        >
+          {menuOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
+
+      </div>
+
+      {/* Mobile Menu */}
+      {menuOpen && (
+
+        <div className="border-t border-white/10 bg-black/95 backdrop-blur-xl lg:hidden">
+
+          <div className="flex flex-col gap-1 px-5 py-5 text-base">
+
+            <NavLink
+              to="/"
+              onClick={() => setMenuOpen(false)}
+              className="rounded-lg px-3 py-3 text-gray-300 transition hover:bg-white/10 hover:text-white"
+            >
+              Home
+            </NavLink>
+
+            <NavLink
+              to="/live"
+              onClick={() => setMenuOpen(false)}
+              className="rounded-lg px-3 py-3 text-gray-300 transition hover:bg-white/10 hover:text-white"
+            >
+              Live
+            </NavLink>
+
+            <NavLink
+              to="/calendar"
+              onClick={() => setMenuOpen(false)}
+              className="rounded-lg px-3 py-3 text-gray-300 transition hover:bg-white/10 hover:text-white"
+            >
+              Calendar
+            </NavLink>
+
+            <NavLink
+              to="/standings"
+              onClick={() => setMenuOpen(false)}
+              className="rounded-lg px-3 py-3 text-gray-300 transition hover:bg-white/10 hover:text-white"
+            >
+              Standings
+            </NavLink>
+
+            <NavLink
+              to="/drivers"
+              onClick={() => setMenuOpen(false)}
+              className="rounded-lg px-3 py-3 text-gray-300 transition hover:bg-white/10 hover:text-white"
+            >
+              Drivers
+            </NavLink>
+
+            <NavLink
+              to="/teams"
+              onClick={() => setMenuOpen(false)}
+              className="rounded-lg px-3 py-3 text-gray-300 transition hover:bg-white/10 hover:text-white"
+            >
+              Teams
+            </NavLink>
+
+            <Link
+              to="/ai"
+              onClick={() => setMenuOpen(false)}
+              className="mt-5 flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-red-600 to-red-500 py-3 font-semibold text-white transition duration-300 hover:from-red-700 hover:to-red-600"
+            >
+              <Bot size={18} />
+              Race Engineer
+            </Link>
+
           </div>
 
         </div>
 
-      </div>
+      )}
+
     </nav>
   );
 }

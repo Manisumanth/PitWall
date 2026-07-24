@@ -11,6 +11,7 @@ import DriverDetails from "./pages/DriverDetails";
 import Teams from "./pages/Teams";
 import TeamDetails from "./pages/TeamDetails";
 import NotFound from "./pages/NotFound";
+import AIRaceEngineer from "./pages/AIRaceEngineer";
 
 function App() {
   return (
@@ -40,6 +41,8 @@ function App() {
             path="/teams/:teamName"
             element={<TeamDetails />}
           />
+
+          <Route path="/ai" element={<AIRaceEngineer />} />
 
         </Route>
 
